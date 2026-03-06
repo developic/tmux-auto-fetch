@@ -1,1 +1,2 @@
 # tmux-auto-fetch
+test
