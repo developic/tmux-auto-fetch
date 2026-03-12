@@ -2,29 +2,35 @@
 
 CURRENT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SCRIPTS_DIR="${CURRENT_DIR}/src"
-path="$(tmux display-message -p "#{pane_current_path}")"
+
 cfg="$HOME/.config/tmux"
-wl="$cfg/whitelist"
+wl="$CFG/whitelist"
 
 source "$SCRIPTS_DIR/toggle.sh"
 source "$SCRIPTS_DIR/git.sh"
 source "$SCRIPTS_DIR/keybind.sh"
 
 
-[[ "$1" == "-w" ]] && toggle "$path" && exit
+# set keybinding
+set_toggle_binding
 
+if [[ "$1" == "-w" ]]; then
+    path="$(tmux display-message -p "#{pane_current_path}")"
+    toggle "$path"
+    exit
+fi
 
-# Get interval from tmux config (default 300)
 SLEEP_INTERVAL=$(tmux show-option -gqv @tmux-fetch-sleep)
 SLEEP_INTERVAL=${SLEEP_INTERVAL:-3}
 
-set_toggle_binding
-
-# Initial git check
-check_git "$path"
-
-# Auto-check loop
 while true; do
+
+    path="$(tmux display-message -p "#{pane_current_path}")"
+
+    if [[ -n "$path" ]]; then
+        check_git "$path"
+    fi
+
     sleep "$SLEEP_INTERVAL"
-    check_git "$path"
+
 done
