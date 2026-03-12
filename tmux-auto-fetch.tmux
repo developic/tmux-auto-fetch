@@ -16,7 +16,7 @@ source "$SCRIPTS_DIR/keybind.sh"
 
 # Get interval from tmux config (default 300)
 SLEEP_INTERVAL=$(tmux show-option -gqv @tmux-fetch-sleep)
-SLEEP_INTERVAL=${SLEEP_INTERVAL:-300}
+SLEEP_INTERVAL=${SLEEP_INTERVAL:-3}
 
 set_toggle_binding
 
