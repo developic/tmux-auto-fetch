@@ -33,7 +33,7 @@ check_git() {
         fi
 
         before=$(git -C "$path" rev-parse HEAD)
-        out=$(git -C "$path" pull --rebase HEAD)
+        out=$(git pull --rebase origin "$(git -C "$path" branch --show-current)")
         st=$?
         after=$(git -C "$path" rev-parse HEAD)
 
