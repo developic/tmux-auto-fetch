@@ -5,8 +5,8 @@ mkdir -p "$cfg"
 touch "$wl"
 
 toggle() {
-    local path=$1
 
+    # If inside a git repo, get top-level folder
     if git -C $path rev-parse --is-inside-work-tree >/dev/null 2>&1; then
         path=$(git -C $path rev-parse --show-toplevel)
     fi
@@ -22,4 +22,5 @@ toggle() {
     fi
 }
 
+# Support -w option for toggle
 [[ $1 == -w ]] && toggle $2 && exit
